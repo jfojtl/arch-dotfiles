@@ -1,0 +1,24 @@
+#!/bin/bash
+
+# dkeg
+# modified for user purpose by thlst
+
+## dependencies are 
+# bar for popups OR use dunst and change notify accordingly
+# imgur upload script (https://code.google.com/p/imgur-cli/)
+# figlet or toilet (in the repos)
+
+img='.ss.png'
+check='sleep .5s'
+scrotit='scrot -s -d .5' 
+sendit="imgur $img"
+notify="notify_bar alert 1d0 $(xsel -ob)"
+
+$check
+$scrotit $img
+$sendit
+xclip -o | xsel -ib
+$check
+rm $img
+$notify
+

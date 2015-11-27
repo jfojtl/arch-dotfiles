@@ -1,0 +1,15 @@
+#!/bin/zsh
+
+workspace() {
+    ws=$(i3-msg -t get_outputs | sed 's/.*"current_workspace":"\([^"]*\)".*/\1/')
+    for w in {1..10}; do
+        if [$ws = "$w"]; then
+            echo "%{F$YELLOW}$(printf '%b' "\ue098")%{F}";
+        else
+            echo "%{F$BLUE}$(printf '%b' "\ue0f6")%{F}";
+        fi;
+    done
+}
+
+
+# printf '%b' "\ue000"

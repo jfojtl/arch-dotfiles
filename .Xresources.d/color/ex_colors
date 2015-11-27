@@ -1,0 +1,19 @@
+#!/bin/zsh
+
+# color directory
+CD="$HOME/.Xresources.d/color/raiin"
+
+# Fetch the Colors
+export BG=$(cat ${CD} | grep -i bg | tail -c 8)
+export FG=$(cat ${CD} | grep -i fg | tail -c 8)
+
+export BLACK=$(cat ${CD} | grep -i blk | tail -c 8)
+export RED=$(cat ${CD} | grep -i red | tail -c 8)
+export GREEN=$(cat ${CD} | grep -i grn | tail -c 8)
+export YELLOW=$(cat ${CD} | grep -i ylw | tail -c 8)
+export BLUE=$(cat ${CD} | grep -i blu | tail -c 8)
+export MAGENTA=$(cat ${CD} | grep -i mag | tail -c 8)
+export CYAN=$(cat ${CD} | grep -i cyn | tail -c 8)
+export WHITE=$(cat ${CD} | grep -i wht | tail -c 8)
+
+

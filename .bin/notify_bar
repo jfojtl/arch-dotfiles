@@ -1,0 +1,24 @@
+#!/bin/zsh
+
+source $HOME/.Xresources.d/color/ex_colors
+
+FONT1="boxxy"
+FONT2="siji"
+
+PW=260
+PH=24
+PX=1050
+PY=60
+
+if [ "$1" = "alert" ]; then
+    echo "%{c]%{F$BLUE}$(printf '%b' "\ue$2") %{F$FG}$3" | \
+        lemonbar -g ${PW}x${PH}+${PX}+${PY} -f "$FONT1" -f "$FONT2" -B "$BG" -F "$FG" -dp | \
+        while :; do
+            sleep 2;
+            p=$(pgrep -n lemonbar);
+            kill $p;
+            exit;
+        done;
+fi
+
+

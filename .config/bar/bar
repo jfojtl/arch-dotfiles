@@ -1,0 +1,100 @@
+#!/bin/zsh
+
+if [ $(pgrep -cx lemonbar) = 1 ] ; then
+	exit 1
+fi
+
+. $HOME/.Xresources.d/color/ex_colors
+
+# Fonts
+FONT1="siji"
+FONT2="boxxy"
+
+# Panel 
+PW=1366 # 1318
+PH=20 # 24
+PX=0 # 22
+PY=0 # 10
+
+#Actions
+POW="zsh ~/.config/bar/pop"
+
+# Functions
+
+# Focused window
+
+focused() {
+    window=$(xdotool getwindowfocus getwindowname)
+    echo "%{F$RED}%{F$FG}$window"
+}
+
+# Workspace number
+
+workspace(){
+	ws=$(i3-msg -t get_outputs | sed 's/.*"current_workspace":"\([^"]*\)".*/\1/')
+    echo "%{F$FG}${ws}"
+}
+
+# Volume status
+
+volume(){
+	VOLUME=$(pulseaudio-ctl full-status | awk '{split($0, array, " ")} END{print array[1]}')
+    MUTE=$(pulseaudio-ctl full-status | awk '{split($0, array, " ")} END{print array[2]}')
+	if [ "$MUTE" = "sim" ];
+	    then vol="%{F$RED}$(printf '%b' "\ue04f")"
+	    else vol="%{F$BLUE}$(printf '%b' "\ue04e")"
+	fi
+	echo "%{A:pulseaudio-ctl mute:}$vol%{F$FG}$VOLUME%{A}"
+}
+
+# Network status
+
+net(){
+	#ping=$(pn=$(timeout .8 ping 50.116.40.226 -c 1 -s 24 | sed '2!d;s/.*time=\([0-9]*\).*/\1/');
+	#if [ -z $pn ] ; then
+	#	echo "%{F$RED}$(printf '%b' "\ue047")";
+	#else
+	#	echo "%{F$BLUE}$(printf '%b' "\ue048")%{F$FG}${pn}ms";
+	#fi)
+    host=$(hostname -i)
+	echo "%{F$BLUE}%{F$FG}${host}"
+}
+
+
+# Memory usage
+
+ram() {
+	ram=$(free | awk '/Mem/{printf("%.f"), ($3/$2)*100}')
+	echo "%{F$BLUE}$(printf '%b' "\ue020")%{F$FG}${ram}"
+}
+
+# Date and time
+
+clock() {
+  d=$(date "+%d %b %Y")
+  c=$(date "+%H:%M")
+  echo "%{F$BLUE}$(printf '%b' "\ue1a2")%{F$FG}${d}  %{F$BLUE}$(printf '%b' "\ue018")%{F$FG}${c}"
+}
+
+# Battery status
+
+pow() {
+	FOLD="/sys/class/power_supply"
+	val=$(if [ -d $FOLD/BAT1 ]; then cat $FOLD/BAT1/capacity; fi)
+	pow=$(if [ $(cat $FOLD/ACAD/online) = 1 ]; then echo "$(printf '%b' "\ue200")"; else echo "$(printf '%b' "\ue201")";fi;)
+	echo "%{F$BLUE}${pow}%{F$FG}${val}"
+}
+
+temp(){
+	temp=$(sensors | grep temp1 | sed '1d;s/temp1:        +\([0-9]*\).*/\1/')
+	echo "%{F$BLUE}$(printf '%b' "\ue0cc")%{F$FG}${temp}C"
+}
+
+# Lemonbar in action
+
+while :; do 
+    echo "  $(workspace)  $(focused) %{r}$(temp)  $(volume)  $(ram)  $(pow)  $(net)  $(clock)  %{F$BLUE}%{A:$POW:}$(printf '%b' "\ue00d") %{A} "
+	 sleep .1
+ done | lemonbar -g ${PW}x${PH}+${PX}+${PY}  -B "#11111F" -F "$FG" -p -d -f "$FONT1" -f "$FONT2" | \
+    while :; do read line; eval $line; done &
+

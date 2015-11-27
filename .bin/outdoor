@@ -1,0 +1,11 @@
+#!/bin/zsh
+
+hsetroot -fill $HOME/Images/$1.* -blur $2
+
+echo "\
+#!/bin/zsh\
+\nhsetroot -fill $HOME/Images/$(echo $1).* -blur $(echo $2)\
+\n" > $HOME/.env/.wallpaper
+
+chmod +x $HOME/.env/.wallpaper
+

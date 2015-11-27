@@ -1,0 +1,29 @@
+!------------------------------------------------
+URxvt*geometry: 80x18
+!URxvt*letterSpace: 1
+URxvt*allow_bold: true
+!------------------------------------------------
+Xft.autohint: true
+Xft.antialias: false
+Xft.hinting: true
+Xft.hintstyle: hintslight
+Xft.rgba: rgb
+Xft.lcdfilter: lcddefault
+
+!------------------------------------------------
+URxvt*saveLines: 100
+URxvt.scrollBar: false
+!URxvt*scrollstyle: plain
+URxvt*cursorBlink: true
+URxvt*cursorUnderline: true
+
+!------------------------------------------------
+URxvt.tabbedex.autohide: no
+URxvt.tabbedex.tabbar-fg: 2
+URxvt.tabbedex.tabbar-bg: 0
+URxvt.tabbedex.tab-fg: 10
+URxvt.tabbedex.tab-bg: 0
+URxvt.tabbedex.title: no
+URxvt.tabbedex.new-button: no
+
+
